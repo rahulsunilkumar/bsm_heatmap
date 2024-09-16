@@ -52,20 +52,20 @@ call_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity,
 put_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity, risk_free_rate, vol, 'put') for S in spot_prices] for vol in volatilities])
 
 # Set figure size for larger plots
-plt.figure(figsize=(10, 8))  # Increase figure size
+plt.figure(figsize=(10, 8))
 
-# Plot call option heatmap with smaller font size for values
+# Call Option HeatMap
 st.subheader("Call Option Price Heatmap")
-fig, ax = plt.subplots(figsize=(12, 8))  # Make the plot larger
-sns.heatmap(call_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Call Price'}, linewidths=0.5, square=True, annot_kws={"size": 8})  # Reduced font size for annotations
+fig, ax = plt.subplots(figsize=(12, 8)) 
+sns.heatmap(call_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Call Price'}, linewidths=0.5, square=True, annot_kws={"size": 5})
 ax.set_xlabel('Spot Price (S)')
 ax.set_ylabel('Volatility (σ)')
 st.pyplot(fig)
 
-# Plot put option heatmap with smaller font size for values
+# Put Option HeatMap
 st.subheader("Put Option Price Heatmap")
-fig, ax = plt.subplots(figsize=(12, 8))  # Make the plot larger
-sns.heatmap(put_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Put Price'}, linewidths=0.5, square=True, annot_kws={"size": 8})  # Reduced font size for annotations
+fig, ax = plt.subplots(figsize=(12, 8)) 
+sns.heatmap(put_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Put Price'}, linewidths=0.5, square=True, annot_kws={"size": 5}) 
 ax.set_xlabel('Spot Price (S)')
 ax.set_ylabel('Volatility (σ)')
 st.pyplot(fig)
