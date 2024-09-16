@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import norm
+import pandas as pd
 
 # Black-Scholes-Merton model function
 def black_scholes_merton(S, K, T, r, sigma, option_type='call'):
@@ -33,6 +34,15 @@ max_spot_price = st.sidebar.number_input('Max Spot Price for Heatmap', min_value
 min_volatility = st.sidebar.number_input('Min Volatility for Heatmap', min_value=0.1, max_value=1.0, value=0.1)
 max_volatility = st.sidebar.number_input('Max Volatility for Heatmap', min_value=0.1, max_value=1.0, value=1.0)
 
+# Display the summary table at the top
+st.subheader("Input Parameters Summary")
+summary_data = {
+    'Parameter': ['Current Asset Price (S)', 'Strike Price (K)', 'Time to Maturity (T)', 'Volatility (σ)', 'Risk-free Rate (r)'],
+    'Value': [current_price, strike_price, time_to_maturity, volatility, risk_free_rate]
+}
+summary_df = pd.DataFrame(summary_data)
+st.table(summary_df)
+
 # Create a grid of spot prices and volatilities
 spot_prices = np.linspace(min_spot_price, max_spot_price, 20)  # 20 discrete levels for spot price
 volatilities = np.linspace(min_volatility, max_volatility, 20)  # 20 discrete levels for volatility
@@ -41,18 +51,18 @@ volatilities = np.linspace(min_volatility, max_volatility, 20)  # 20 discrete le
 call_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity, risk_free_rate, vol, 'call') for S in spot_prices] for vol in volatilities])
 put_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity, risk_free_rate, vol, 'put') for S in spot_prices] for vol in volatilities])
 
-# Plot call option heatmap
+# Plot call option heatmap with values
 st.subheader("Call Option Price Heatmap")
 fig, ax = plt.subplots()
-sns.heatmap(call_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", cbar_kws={'label': 'Call Price'}, linewidths=0.5, square=True)
+sns.heatmap(call_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Call Price'}, linewidths=0.5, square=True)
 ax.set_xlabel('Spot Price (S)')
 ax.set_ylabel('Volatility (σ)')
 st.pyplot(fig)
 
-# Plot put option heatmap
+# Plot put option heatmap with values
 st.subheader("Put Option Price Heatmap")
 fig, ax = plt.subplots()
-sns.heatmap(put_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", cbar_kws={'label': 'Put Price'}, linewidths=0.5, square=True)
+sns.heatmap(put_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Put Price'}, linewidths=0.5, square=True)
 ax.set_xlabel('Spot Price (S)')
 ax.set_ylabel('Volatility (σ)')
 st.pyplot(fig)
