@@ -20,6 +20,16 @@ def black_scholes_merton(S, K, T, r, sigma, option_type='call'):
 # Streamlit UI
 st.title("Optimized Black-Scholes-Merton Option Pricing Heatmap")
 
+# Add a button linking to the derivation page
+st.markdown(
+    """
+    <a href="https://sites.google.com/view/rahulsunilkumar/the-black-scholes-pricing-model?authuser=0" target="_blank">
+    <button style="background-color:#4CAF50; color:white; padding:10px 20px; text-align:center; border:none; border-radius:4px;">
+    Learn about the derivation here
+    </button></a>
+    """, unsafe_allow_html=True
+)
+
 # User Inputs for the Option Parameters
 current_price = st.sidebar.number_input('Current Asset Price (S)', min_value=50.0, max_value=150.0, value=100.0)
 strike_price = st.sidebar.number_input('Strike Price (K)', min_value=50.0, max_value=150.0, value=100.0)
@@ -45,27 +55,4 @@ st.table(summary_df)
 
 # Create a grid of spot prices and volatilities
 spot_prices = np.linspace(min_spot_price, max_spot_price, 20)  # 20 discrete levels for spot price
-volatilities = np.linspace(min_volatility, max_volatility, 20)  # 20 discrete levels for volatility
-
-# Calculate call and put option prices
-call_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity, risk_free_rate, vol, 'call') for S in spot_prices] for vol in volatilities])
-put_prices = np.array([[black_scholes_merton(S, strike_price, time_to_maturity, risk_free_rate, vol, 'put') for S in spot_prices] for vol in volatilities])
-
-# Set figure size for larger plots
-plt.figure(figsize=(10, 8))
-
-# Call Option HeatMap
-st.subheader("Call Option Price Heatmap")
-fig, ax = plt.subplots(figsize=(12, 8)) 
-sns.heatmap(call_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Call Price'}, linewidths=0.5, square=True, annot_kws={"size": 5})
-ax.set_xlabel('Spot Price (S)')
-ax.set_ylabel('Volatility (σ)')
-st.pyplot(fig)
-
-# Put Option HeatMap
-st.subheader("Put Option Price Heatmap")
-fig, ax = plt.subplots(figsize=(12, 8)) 
-sns.heatmap(put_prices, xticklabels=np.round(spot_prices, 2), yticklabels=np.round(volatilities, 2), ax=ax, cmap="RdYlGn", annot=True, fmt=".2f", cbar_kws={'label': 'Put Price'}, linewidths=0.5, square=True, annot_kws={"size": 5}) 
-ax.set_xlabel('Spot Price (S)')
-ax.set_ylabel('Volatility (σ)')
-st.pyplot(fig)
+volatilities = np.linspace(min_vol
